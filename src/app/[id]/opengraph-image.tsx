@@ -26,11 +26,18 @@ export default async function getServerSideProps({
           height: "100%",
           display: "flex",
           flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
         <img
           alt={restaurant.name}
-          style={{ width: "100%", height: "300px", objectFit: "cover" }}
+          style={{
+            width: "80%",
+            height: "300px",
+            objectFit: "cover",
+            borderRadius: "10px",
+          }}
           src={restaurant.image}
         />
         <h2
@@ -40,10 +47,11 @@ export default async function getServerSideProps({
             fontSize: "18px",
             lineHeight: "28px",
             fontWeight: "700",
+            marginTop: "20px",
           }}
         >
           <span>{restaurant.name}</span>
-          <small style={{ display: "flex", gap: "10px" }}>
+          <small style={{ display: "flex", gap: "10px", alignItems: "center" }}>
             <span>⭐</span>
             <span>{restaurant.score}</span>
             <span style={{ fontWeight: 400, opacity: 0.75 }}>
@@ -51,7 +59,14 @@ export default async function getServerSideProps({
             </span>
           </small>
         </h2>
-        <p style={{ opacity: 0.9, fontSize: "20px" }}>
+        <p
+          style={{
+            opacity: 0.9,
+            fontSize: "20px",
+            marginTop: "10px",
+            textAlign: "center",
+          }}
+        >
           {restaurant.description}
         </p>
       </div>

@@ -48,9 +48,7 @@ export default async function RestaurantPage({
         </small>
       </h2>
       <p className="opacity-90">{restaurant.description}</p>
-      <div className="flex items-center ">
-        <CopyLink />
-      </div>
+      <CopyLink />
     </article>
   );
 }

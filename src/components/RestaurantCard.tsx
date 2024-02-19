@@ -1,7 +1,6 @@
 "use client";
 // Importamos los tipos necesarios
 import type { Restaurant } from "@/types";
-import Image from "next/image";
 
 // Importamos las funciones necesarias de React y Next.js
 import { useState, useEffect } from "react";

@@ -1,10 +1,9 @@
-// rutas dinamicas
-// tarea : usar otro componente
-
+// Importamos las dependencias necesarias
 import api from "@/api";
 import { CopyLink } from "@/components/CopyLink";
 
-// generar metadata especificos para las rutas que necesitamos
+// Esta función genera metadatos específicos para las rutas que necesitamos
+// Obtiene el id de los parámetros y lo usa para buscar un restaurante específico
 export async function generateMetadata({
   params: { id },
 }: {
@@ -12,11 +11,15 @@ export async function generateMetadata({
 }) {
   const restaurant = await api.fetch(id);
 
+  // Devuelve un objeto con el título y la descripción del restaurante
   return {
     title: `${restaurant.name} - Restaurancy`,
     description: restaurant.description,
   };
 }
+
+// Esta función genera los parámetros estáticos para las rutas
+// Obtiene una lista de restaurantes y devuelve un array de objetos, cada uno con un id de restaurante
 export async function generateStaticParams() {
   const restaurants = await api.list();
 
@@ -24,7 +27,9 @@ export async function generateStaticParams() {
     id: restaurant.id,
   }));
 }
-// obtenemos los parametros id de la url y se lo pasamos a api.fech
+
+// Este es el componente de la página del restaurante
+// Obtiene el id de los parámetros y lo usa para buscar un restaurante específico
 export default async function RestaurantPage({
   params: { id },
 }: {
@@ -32,6 +37,7 @@ export default async function RestaurantPage({
 }) {
   const restaurant = await api.fetch(id);
 
+  // Renderiza la información del restaurante y un enlace para copiar
   return (
     <article key={restaurant.id}>
       <img

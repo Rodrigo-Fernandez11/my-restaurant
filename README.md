@@ -1,36 +1,115 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🍽 My Restaurant
 
-## Getting Started
+Directorio de restaurantes con búsqueda, filtros y favoritos. Construido con Next.js 14 App Router y desplegado en Vercel.
 
-First, run the development server:
+**Demo en vivo**: https://my-restaurant-five-sigma.vercel.app
+
+---
+
+## Stack
+
+- **Framework**: Next.js 14 (App Router)
+- **Lenguaje**: TypeScript 5 (modo strict)
+- **Estilos**: Tailwind CSS 3 — paleta Ember & Charcoal
+- **Fuente**: Inter (next/font)
+- **Notificaciones**: Sonner
+- **Deploy**: Vercel
+
+---
+
+## Funcionalidades
+
+- Listado de restaurantes con imagen, score, precio y dirección
+- Búsqueda en tiempo real por nombre o descripción
+- Filtro por categoría (italiana, japonesa, mexicana, etc.)
+- Filtro por rango de precio ($–$$$$)
+- Página de favoritos (guardados en localStorage)
+- Modo oscuro / claro con persistencia
+- Imágenes optimizadas con `next/image`
+- Página de detalle con rating en estrellas
+- Compartir imagen OG del restaurante al portapapeles
+
+---
+
+## Instalación
 
 ```bash
+# Clonar el repositorio
+git clone https://github.com/Rodrigo-Fernandez11/my-restaurant.git
+cd my-restaurant
+
+# Instalar dependencias
+npm install
+
+# Configurar variables de entorno
+cp .env.example .env.local
+# Editar .env.local y completar REVALIDATE_SECRET
+
+# Correr en desarrollo
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abrí [http://localhost:3000](http://localhost:3000) en el navegador.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Variables de entorno
 
-## Learn More
+| Variable | Requerida | Descripción |
+|---|---|---|
+| `REVALIDATE_SECRET` | Sí | Token Bearer para el endpoint de revalidación manual |
+| `NEXT_PUBLIC_BASE_URL` | No | URL base del sitio (por defecto usa la URL de Vercel) |
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Estructura del proyecto
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```
+src/
+├── app/
+│   ├── [id]/           # Página de detalle del restaurante
+│   ├── api/revalidate/ # Endpoint de revalidación (protegido)
+│   ├── favorites/      # Página de favoritos
+│   ├── layout.tsx      # Layout raíz con Header, Footer y tema
+│   └── page.tsx        # Home con búsqueda y filtros
+├── components/
+│   ├── CategoryFilter  # Chips de filtro por categoría
+│   ├── PriceFilter     # Chips de filtro por precio
+│   ├── RestaurantCard  # Tarjeta de restaurante
+│   ├── SearchBox       # Input de búsqueda con URL params
+│   ├── SkeletonCard    # Placeholder animado de carga
+│   ├── StarRating      # Visualización de score con estrellas
+│   ├── ThemeToggle     # Botón dark/light mode
+│   ├── Header / Footer
+│   └── CopyLink        # Botón para compartir imagen OG
+├── data/
+│   └── restaurants.ts  # Datos estáticos de los 12 restaurantes
+├── lib/
+│   ├── env.ts          # Lectura segura de variables de entorno
+│   ├── favorites.ts    # Helpers de localStorage para favoritos
+│   └── filters.ts      # Función pura de filtrado del catálogo
+└── types/
+    └── restaurant.ts   # Tipos: Restaurant, PriceRange, RestaurantCategory
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Scripts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```bash
+npm run dev      # Servidor de desarrollo
+npm run build    # Build de producción
+npm run start    # Servidor de producción
+npm run lint     # ESLint
+```
+
+---
+
+## Revalidación manual
+
+Para refrescar el caché del home desde un sistema externo:
+
+```bash
+curl -X POST https://tu-dominio.vercel.app/api/revalidate \
+  -H "Authorization: Bearer TU_REVALIDATE_SECRET"
+```

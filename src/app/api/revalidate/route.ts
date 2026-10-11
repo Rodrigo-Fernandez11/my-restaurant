@@ -1,10 +1,15 @@
-// revalidacion de manera manual con funciones
-// buena practica: envolver endpoints utilitarios en secretos
-// ¿como? --> definir una varible de entorno REVALIDATE_SECRET en la ruta api para ejecutarlar cuando nos envien una parametro "secret" con el valor
+import { getRevalidateSecret } from "@/lib/env";
 import { revalidatePath } from "next/cache";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST() {
+export async function POST(request: NextRequest) {
+  const secret = getRevalidateSecret();
+  const authHeader = request.headers.get("authorization");
+
+  if (!authHeader || authHeader !== `Bearer ${secret}`) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+
   revalidatePath("/");
-
-  return Response.json({ success: true });
+  return NextResponse.json({ revalidated: true, now: Date.now() });
 }

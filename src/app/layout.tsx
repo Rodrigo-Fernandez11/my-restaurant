@@ -23,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className={`${inter.className} min-h-screen bg-charcoal-950 text-charcoal-100 flex flex-col`}>
+      <body className={`${inter.className} min-h-screen flex flex-col`}>
         <Header />
         <main className="flex-1 max-w-6xl mx-auto w-full px-4 py-8">
           {children}

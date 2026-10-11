@@ -19,7 +19,7 @@ export default function ThemeToggle() {
     <button
       onClick={toggle}
       aria-label="Toggle theme"
-      className="p-2 rounded-lg text-charcoal-300 hover:text-ember-400 hover:bg-charcoal-800 transition-colors"
+      className="p-2 rounded-lg text-charcoal-500 hover:text-ember-600 hover:bg-charcoal-100 dark:text-charcoal-300 dark:hover:text-ember-400 dark:hover:bg-charcoal-800 transition-colors"
     >
       {dark ? "☀️" : "🌙"}
     </button>

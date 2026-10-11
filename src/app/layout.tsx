@@ -8,6 +8,9 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_BASE_URL ?? "https://my-restaurant-five-sigma.vercel.app"
+  ),
   title: "My Restaurant",
   description: "Discover the best restaurants around you",
   keywords: ["restaurant", "food", "eat", "dinner", "lunch"],

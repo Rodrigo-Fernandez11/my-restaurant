@@ -1,66 +1,37 @@
-import type { Restaurant } from "@/types";
+import { RESTAURANTS } from "@/data/restaurants";
+import type { Restaurant } from "@/types/restaurant";
 
-import { restaurants } from "@/data/restaurants";
+export function getRestaurants(): readonly Restaurant[] {
+  return RESTAURANTS;
+}
 
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+export function getRestaurant(id: string): Restaurant | null {
+  return RESTAURANTS.find((r) => r.id === id) ?? null;
+}
 
+// Compatibility shim — consumed by existing pages until Phase 4 rewrites them.
+// Remove this default export after Phase 4 is merged.
 const api = {
-  list: async (): Promise<Restaurant[]> => {
-    // Obtenemos la información de Google Sheets en formato texto y la dividimos por líneas, nos saltamos la primera línea porque es el encabezado
-    //configuracion de revalidacion de cache con {cache: "no-store"} en la url
-    // revalidad tag {next: {tags: {"restaurants"}}}
-    const [, ...data] = await fetch(
-      "https://docs.google.com/spreadsheets/d/e/2PACX-1vQTNZ7csRKT510_93aA6lvzCcB_i5tLz2idxcNgI6yjMGhTauf0kt6kl0vuVtqUbYM1Uh8BtbS6NM8V/pub?output=csv",
-      { next: { tags: ["restaurants"] } }
-    )
-      .then((res) => res.text())
-      .then((text) => text.split("\n"));
-
-    // Convertimos cada línea en un objeto Restaurant, asegúrate de que los campos no posean `,`
-    const restaurants: Restaurant[] = data.map((row) => {
-      const [id, name, description, address, score, ratings, image] =
-        row.split(",");
-
-      return {
-        id,
-        name,
-        description,
-        address,
-        score: Number(score),
-        ratings: Number(ratings),
-        image,
-      };
-    });
-
-    // Lo retornamos
-    return restaurants;
+  list: async (): Promise<readonly Restaurant[]> => {
+    return RESTAURANTS;
   },
 
-  fetch: async (id: Restaurant["id"]): Promise<Restaurant> => {
-    const restaurant = restaurants.find((restaurant) => restaurant.id === id);
-
+  fetch: async (id: string): Promise<Restaurant> => {
+    const restaurant = RESTAURANTS.find((r) => r.id === id);
     if (!restaurant) {
       throw new Error(`Restaurant with id ${id} not found`);
     }
-
     return restaurant;
   },
 
-  search: async (query: string): Promise<Restaurant[]> => {
-    // Obtenemos los restaurantes
-    const restaurants = await api.list();
-
-    // Si el query está vacío, devolvemos todos los restaurantes
-    if (!query) {
-      return restaurants;
-    }
-
-    // Si no, filtramos por nombre
-    const results = restaurants.filter((restaurant) =>
-      restaurant.name.toLowerCase().includes(query.toLowerCase())
+  search: async (query: string): Promise<readonly Restaurant[]> => {
+    if (!query) return RESTAURANTS;
+    const q = query.toLowerCase();
+    return RESTAURANTS.filter(
+      (r) =>
+        r.name.toLowerCase().includes(q) ||
+        r.description.toLowerCase().includes(q)
     );
-
-    return results;
   },
 };
 

@@ -1,1 +1,1 @@
-export type { Restaurant } from "./restaurant";
+export type { Restaurant, PriceRange, RestaurantCategory } from "./restaurant";

@@ -1,30 +1,35 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-
+import { Inter } from "next/font/google";
+import { Toaster } from "sonner";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import "./globals.css";
 
+const inter = Inter({ subsets: ["latin"] });
+
 export const metadata: Metadata = {
-  title: "Your-restaurant",
-  description: "The best restaurants in the world",
+  title: "My Restaurant",
+  description: "Discover the best restaurants around you",
   keywords: ["restaurant", "food", "eat", "dinner", "lunch"],
-  // hay mas metadatas
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className="container m-auto grid min-h-screen grid-rows-[auto,1fr,auto] px-4">
-        <header className="text-xl font-bold leading-[3rem]">
-          <Link href={"/"}>Your Restaurant</Link>
-        </header>
-        <main className="py-8">{children}</main>
-        <footer className="text-center leading-[3rem] opacity-70">
-          © {new Date().getFullYear()} Your-Restaurant
-        </footer>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark')}}catch(e){}})()`,
+          }}
+        />
+      </head>
+      <body className={`${inter.className} min-h-screen bg-charcoal-950 text-charcoal-100 flex flex-col`}>
+        <Header />
+        <main className="flex-1 max-w-6xl mx-auto w-full px-4 py-8">
+          {children}
+        </main>
+        <Footer />
+        <Toaster position="bottom-right" />
       </body>
     </html>
   );

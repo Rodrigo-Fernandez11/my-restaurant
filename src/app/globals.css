@@ -2,8 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  color-scheme: dark;
-  color: CanvasText;
-  background-color: Canvas;
+@layer base {
+  html {
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-white text-charcoal-800 dark:bg-charcoal-900 dark:text-charcoal-50;
+    @apply font-sans antialiased;
+  }
 }
